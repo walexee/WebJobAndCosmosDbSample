@@ -1,9 +1,6 @@
 ﻿using SampleWebJobs.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -30,14 +27,7 @@ namespace SampleWebJobs.Web.Controllers
 
         public Task<Guid> Post([FromBody]Student student)
         {
-            try
-            {
-                return _studentRepository.AddStudent(student);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return _studentRepository.AddStudent(student);
         }
 
         public void Put(int id, [FromBody]string value)

@@ -49,33 +49,19 @@ namespace SampleWebJobs.Core
             var connectionString = ConfigurationManager.AppSettings["dbConnectionString"];
             var connectionUrl = new MongoUrl(connectionString);
             var settings = MongoClientSettings.FromUrl(connectionUrl);
-            
+
             settings.SslSettings = new SslSettings
             {
-                EnabledSslProtocols = SslProtocols.Tls12
+                EnabledSslProtocols = SslProtocols.Tls12,
             };
 
             return new MongoClient(settings);
-
-
-            //var settings = new MongoClientSettings();
-            //settings.Server = new MongoServerAddress(host, 10255);
-            //settings.UseSsl = true;
-            //settings.SslSettings = new SslSettings();
-            //settings.SslSettings.EnabledSslProtocols = SslProtocols.Tls12;
-
-            //MongoIdentity identity = new MongoInternalIdentity(dbName, userName);
-            //MongoIdentityEvidence evidence = new PasswordEvidence(password);
-
-            //settings.Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence);
-
-            //MongoClient client = new MongoClient(settings);
         }
 
         private IMongoCollection<Student> GetCollection()
         {
-            var dbName = "walecosmos001";
-            var collectionName = "students";
+            var dbName = ConfigurationManager.AppSettings["dbName"];
+            var collectionName = ConfigurationManager.AppSettings["collectionName"];
             var client = GetDbClient();
 
             var database = client.GetDatabase(dbName);
