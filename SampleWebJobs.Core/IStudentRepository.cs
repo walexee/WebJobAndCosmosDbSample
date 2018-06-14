@@ -10,5 +10,6 @@ namespace SampleWebJobs.Core
         Task DeleteStudent(Guid studentId);
         Task<Student> GetStudent(Guid studentId);
         Task<IList<Student>> GetStudents();
+        Task UpdateStudent(Student student);
     }
 }

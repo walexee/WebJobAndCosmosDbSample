@@ -1,4 +1,5 @@
 ﻿using SampleWebJobs.Core;
+using SampleWebJobs.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,8 +37,11 @@ namespace SampleWebJobs.Web.Controllers
             return message.Id;
         }
 
-        public void Put(int id, [FromBody]Student student)
+        public Task Put(Guid id, SaveStudentViewModel model)
         {
+            var message = new UpdateStudentMessage(id, model.FirstName, model.LastName);
+
+            return _bus.PublishAsync(message);
         }
 
         public Task Delete(Guid id)

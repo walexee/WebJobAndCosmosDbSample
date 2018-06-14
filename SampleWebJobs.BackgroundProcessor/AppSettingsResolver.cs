@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace SampleWebJobs.BackgroundProcessor
 {
-    public class QueueNameResolver : INameResolver
+    public class AppSettingsResolver : INameResolver
     {
         public string Resolve(string name)
         {

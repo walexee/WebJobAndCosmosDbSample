@@ -12,7 +12,10 @@ namespace SampleWebJobs.Core
     {
         public async Task<Guid> AddStudent(Student student)
         {
-            student.Id = Guid.NewGuid();
+            if (student.Id == Guid.Empty)
+            {
+                student.Id = Guid.NewGuid();
+            }
 
             var collection = GetCollection();
 
@@ -35,6 +38,17 @@ namespace SampleWebJobs.Core
             var students = await collection.FindAsync(FilterDefinition<Student>.Empty);
 
             return students.ToList();
+        }
+
+        public Task UpdateStudent(Student student)
+        {
+            var collection = GetCollection();
+           
+            var update = Builders<Student>.Update
+                    .Set(x => x.FirstName, student.FirstName)
+                    .Set(x => x.LastName, student.LastName);
+
+            return collection.UpdateOneAsync(s => s.Id == student.Id , update);
         }
 
         public Task DeleteStudent(Guid studentId)

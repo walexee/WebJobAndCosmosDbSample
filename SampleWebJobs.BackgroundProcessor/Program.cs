@@ -18,28 +18,20 @@ namespace SampleWebJobs.BackgroundProcessor
             config.StorageConnectionString = connectionString;
             config.DashboardConnectionString = connectionString;
 
-            config.NameResolver = new QueueNameResolver();
-            //FilesConfiguration filesConfig = new FilesConfiguration();
-            // When running locally, set this to a valid directory. 
-            // Remove this when running in Azure.
-            // filesConfig.RootPath = @"c:\temp\files";
-
-            // optional
+            config.NameResolver = new AppSettingsResolver();
+            
             config.Queues.BatchSize = 8;
             config.Queues.MaxDequeueCount = 4;
             config.Queues.MaxPollingInterval = TimeSpan.FromMinutes(1);
-
-            // Add Triggers and Binders for Files and Timer Trigger.
-            //config.UseFiles(filesConfig);
-            //config.UseUseTimers();
             
             JobHost host = new JobHost(config);
 
             host.RunAndBlock();
         }
 
-        public async static Task ProcessQueueMessageAsync([QueueTrigger("studentsmessagequeue")] AddStudentMessage message, TextWriter logger)
+        public async static Task ProcessAddStudentMessageAsync([QueueTrigger("%queueName%")] AddStudentMessage message, TextWriter logger)
         {
+            await Console.Out.WriteAsync($"Starting processing request for user: '{message.FirstName} {message.LastName}'");
             try
             {
                 var repository = new StudentRepository();
@@ -60,7 +52,34 @@ namespace SampleWebJobs.BackgroundProcessor
                 var error = $"Error Message: '{baseException.Message}'; Stack Trace: '{baseException.StackTrace}'; Queue Message: {messageJson}";
                 await logger.WriteAsync(error);
             }
-            await logger.WriteLineAsync(message.FirstName);
+
+            await Console.Out.WriteAsync($"Completed processsing request for user: '{message.FirstName} {message.LastName}'");
+        }
+
+        public async static Task ProcessUpdateStudentMessageAsync([QueueTrigger("%queueName%")] UpdateStudentMessage message, TextWriter logger)
+        {
+            await Console.Out.WriteAsync($"Starting processing request for user: '{message.FirstName} {message.LastName}'");
+            try
+            {
+                var repository = new StudentRepository();
+                var student = new Student
+                {
+                    Id = message.Id,
+                    FirstName = message.FirstName,
+                    LastName = message.LastName
+                };
+
+                await repository.AddStudent(student);
+            }
+            catch (Exception ex)
+            {
+                var baseException = ex.GetBaseException();
+                var messageJson = JsonConvert.SerializeObject(message);
+                var error = $"Error Message: '{baseException.Message}'; Stack Trace: '{baseException.StackTrace}'; Queue Message: {messageJson}";
+                await logger.WriteAsync(error);
+            }
+
+            await Console.Out.WriteAsync($"Completed processsing request for user: '{message.FirstName} {message.LastName}'");
         }
     }
 }
