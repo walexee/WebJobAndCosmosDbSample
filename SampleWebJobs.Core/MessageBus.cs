@@ -2,6 +2,7 @@
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
+using System.Configuration;
 using System.Threading.Tasks;
 
 namespace SampleWebJobs.Core
@@ -18,7 +19,7 @@ namespace SampleWebJobs.Core
 
         private CloudQueue GetQueue()
         {
-            var queueName = "studentsMessageQueue";
+            var queueName = ConfigurationManager.AppSettings["queueName"];
             var storageAccount = CloudStorageAccount.Parse(
                 CloudConfigurationManager.GetSetting("StorageConnectionString"));
 

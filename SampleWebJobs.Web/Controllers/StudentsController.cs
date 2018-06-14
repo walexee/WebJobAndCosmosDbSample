@@ -9,10 +9,12 @@ namespace SampleWebJobs.Web.Controllers
     public class StudentsController : ApiController
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IBus _bus;
 
         public StudentsController()
         {
             _studentRepository = new StudentRepository();
+            _bus = new MessageBus();
         }
 
         public async Task<IEnumerable<Student>> Get()
@@ -25,12 +27,16 @@ namespace SampleWebJobs.Web.Controllers
             return _studentRepository.GetStudent(id);
         }
 
-        public Task<Guid> Post([FromBody]Student student)
+        public async Task<Guid> Post(Student student)
         {
-            return _studentRepository.AddStudent(student);
+            var message = new AddStudentMessage(student.FirstName, student.LastName, student.Age);
+
+            await _bus.PublishAsync(message);
+
+            return message.Id;
         }
 
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Student student)
         {
         }
 

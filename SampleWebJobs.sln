@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebJobs.Core", "SampleWebJobs.Core\SampleWebJobs.Core.csproj", "{6A39B134-78D0-47C7-BA8B-3A734AA5C8CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebJobs.Web", "SampleWebJobs.Web\SampleWebJobs.Web.csproj", "{E2AAB91F-FCB4-4BC4-B24C-67341D1F14A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebJobs.BackgroundProcessor", "SampleWebJobs.BackgroundProcessor\SampleWebJobs.BackgroundProcessor.csproj", "{ED0DDCCE-B2AC-4ABF-A193-1CF5F0A1AE16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundProcessor", "SampleWebJobs.BackgroundProcessor\BackgroundProcessor.csproj", "{ED0DDCCE-B2AC-4ABF-A193-1CF5F0A1AE16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

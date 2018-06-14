@@ -63,9 +63,8 @@ namespace SampleWebJobs.Core
             var dbName = ConfigurationManager.AppSettings["dbName"];
             var collectionName = ConfigurationManager.AppSettings["collectionName"];
             var client = GetDbClient();
-
             var database = client.GetDatabase(dbName);
-
+            
             return database.GetCollection<Student>(collectionName);
         }
     }
