@@ -51,6 +51,25 @@ namespace SampleWebJobs.Core
             return collection.UpdateOneAsync(s => s.Id == student.Id , update);
         }
 
+        public async Task<IList<StudentSummary>> SearchStudent(StudentQuery query)
+        {
+            var collection = GetCollection();
+            var projection = Builders<Student>.Projection.Exclude(x => x.Email).Exclude(x => x.Age);
+            //Builders<Student>.Projection.Expression(x => new StudentSummary { Id = x.Id, FirstName = x.FirstName, LastName = x.LastName });
+
+            var students = collection
+                                .Find(x => query.LastNames.Contains(x.LastName))
+                                .Project(x => new StudentSummary { Id = x.Id, FirstName = x.FirstName, LastName = x.LastName });
+
+            return await students.ToListAsync();
+
+            //var filter = Builders<Student>.Filter.Eq("FirstName", student.FirstName) | Builders<Student>.Filter.Eq("LastName", student.LastName);
+            //var d = new FilterDefinition<Student>()
+
+            //var filter = Builders<Student>.Filter.ElemMatch()
+            //return collection.UpdateOneAsync(s => s.Id == student.Id, update);
+        }
+
         public Task DeleteStudent(Guid studentId)
         {
             var collection = GetCollection();

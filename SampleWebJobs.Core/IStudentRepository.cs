@@ -11,5 +11,6 @@ namespace SampleWebJobs.Core
         Task<Student> GetStudent(Guid studentId);
         Task<IList<Student>> GetStudents();
         Task UpdateStudent(Student student);
+        Task<IList<StudentSummary>> SearchStudent(StudentQuery query);
     }
 }

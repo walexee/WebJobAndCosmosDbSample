@@ -71,6 +71,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StudentSummary.cs" />
+    <Compile Include="StudentQuery.cs" />
     <Compile Include="UpdateStudentMessage.cs" />
     <Compile Include="AddStudentMessage.cs" />
     <Compile Include="IBus.cs" />

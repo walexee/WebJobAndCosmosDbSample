@@ -28,13 +28,26 @@ namespace SampleWebJobs.Web.Controllers
             return _studentRepository.GetStudent(id);
         }
 
+        [HttpPost, Route("api/students/getall")]
+        public Task<IList<StudentSummary>> GetAll([FromBody]StudentQuery query)
+        {
+            return _studentRepository.SearchStudent(query);
+        }
+
         public async Task<Guid> Post(Student student)
         {
             var message = new AddStudentMessage(student.FirstName, student.LastName, student.Age);
-
             await _bus.PublishAsync(message);
 
             return message.Id;
+        }
+
+        [Route("api/students/save")]
+        public async Task<Guid> DirectPost(Student student)
+        {
+            await _studentRepository.AddStudent(student);
+
+            return student.Id;
         }
 
         public Task Put(Guid id, SaveStudentViewModel model)
